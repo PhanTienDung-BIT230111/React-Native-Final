@@ -1,24 +1,68 @@
-import { Stack } from "expo-router";
-import React from "react";
-import HeaderWithAvatar from "../components/HeaderWithAvatar";
-export default function RootLayout() {
+import { Tabs } from "expo-router";
+import { FontAwesome } from "@expo/vector-icons";
+
+export default function Layout() {
   return (
-    <Stack
+    <Tabs
       screenOptions={{
-        headerShown: true,
+        tabBarActiveTintColor: "#000",
+        tabBarInactiveTintColor: "#6b7280",
+        tabBarStyle: {
+          backgroundColor: "#fff",
+          paddingTop: 5,
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
       }}
     >
-      <Stack.Screen
+      <Tabs.Screen
         name="Home"
         options={{
-          header: () => (
-            <HeaderWithAvatar
-              title="Admin Dashboard"
-              avatarUrl="https://i.pravatar.cc/150?img=1"
-            />
+          title: "Trang chủ",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" size={20} color={color} />
+          ),
+          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name="projects"
+        options={{
+          title: "Dự án",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="sitemap" size={20} color={color} />
           ),
         }}
       />
-    </Stack>
+      <Tabs.Screen
+        name="employees"
+        options={{
+          title: "Nhân sự",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="users" size={20} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="contracts"
+        options={{
+          title: "Hợp đồng",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="file-text" size={20} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="report"
+        options={{
+          title: "Báo cáo",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="bar-chart" size={20} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }

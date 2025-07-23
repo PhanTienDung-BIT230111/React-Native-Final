@@ -5,13 +5,16 @@ import {
   ScrollView,
   Image,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { ActivityIndicator } from "react-native";
-
+import DashboardCard from "../components/DashboardCard";
+import ActionButton from "@/components/ActionButton";
+import HeaderWithAvatar from "../components/HeaderWithAvatar";
 export default function DashboardScreen() {
   const [projectCount, setProjectCount] = useState(0);
   const [contractPending, setContractPending] = useState(0); // tạm mock
@@ -20,6 +23,16 @@ export default function DashboardScreen() {
 
   const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <HeaderWithAvatar
+          title="Admin Dashboard"
+          avatarUrl="https://i.pravatar.cc/150?img=1"
+        />
+      ),
+    });
+  }, [navigation]);
   useEffect(() => {
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, "projects"));
@@ -47,16 +60,25 @@ export default function DashboardScreen() {
         />
         <DashboardCard label="Tổng doanh thu" value={revenue} />
       </View>
-    </ScrollView>
-  );
-}
 
-function DashboardCard({ label, value }: { label: string; value: string }) {
-  return (
-    <View style={styles.card}>
-      <Text style={styles.cardLabel}>{label}</Text>
-      <Text style={styles.cardValue}>{value}</Text>
-    </View>
+      {/*Quick Action button  */}
+      <Text style={styles.title}>Thao tác nhanh</Text>
+      <View style={styles.cardContainer}>
+        <ActionButton
+          iconName="plus"
+          color="#fff"
+          label="Tạo dự án mới"
+          bgColor="#000"
+        ></ActionButton>
+
+        <ActionButton
+          iconName="clipboard"
+          color="#000"
+          label="Báo cáo tuần"
+          bgColor="#ccc"
+        ></ActionButton>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -67,27 +89,23 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
   },
   cardContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 15,
+    justifyContent: "space-between",
   },
-  card: {
-    width: "45%",
-    backgroundColor: "#f3f4f6",
+  createPjBtn: {
+    color: "#fff",
+    backgroundColor: "#4CAF50",
     padding: 15,
     borderRadius: 10,
-  },
-  cardLabel: {
-    fontSize: 14,
-    color: "#555",
-  },
-  cardValue: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "47%",
+    height: 80,
   },
 });
