@@ -2,16 +2,16 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { useLayoutEffect } from "react";
 import { useNavigation } from "expo-router";
-import HeaderWithAvatar from "../components/HeaderWithAvatar";
+import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
 
-export default function projects() {
+export default function report() {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (
         <HeaderWithAvatar
-          title="Admin Dashboard"
+          title="Thống kê"
           avatarUrl="https://i.pravatar.cc/150?img=1"
         />
       ),
@@ -19,8 +19,8 @@ export default function projects() {
   }, [navigation]);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Projects</Text>
-      <Text style={styles.description}>This is the projects page.</Text>
+      <Text style={styles.title}>Report</Text>
+      <Text style={styles.description}>This is the report page.</Text>
     </View>
   );
 }

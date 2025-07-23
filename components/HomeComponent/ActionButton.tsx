@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   },
   iconAction: {},
   labelAction: {
+    marginTop: 10,
     fontSize: 16,
     fontWeight: "bold",
   },

@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
-
 export default function Layout() {
   return (
     <Tabs
@@ -28,7 +27,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="projects"
+        name="projects/index"
         options={{
           title: "Dự án",
           tabBarIcon: ({ color }) => (
@@ -37,7 +36,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="employees"
+        name="employees/index"
         options={{
           title: "Nhân sự",
           tabBarIcon: ({ color }) => (
@@ -46,7 +45,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="contracts"
+        name="contracts/index"
         options={{
           title: "Hợp đồng",
           tabBarIcon: ({ color }) => (
@@ -55,7 +54,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="report"
+        name="report/index"
         options={{
           title: "Báo cáo",
           tabBarIcon: ({ color }) => (

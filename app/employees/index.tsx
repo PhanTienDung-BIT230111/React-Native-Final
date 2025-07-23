@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { useLayoutEffect } from "react";
 import { useNavigation } from "expo-router";
-import HeaderWithAvatar from "../components/HeaderWithAvatar";
+import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
 
 export default function employees() {
   const navigation = useNavigation();
@@ -11,7 +11,7 @@ export default function employees() {
     navigation.setOptions({
       header: () => (
         <HeaderWithAvatar
-          title="Admin Dashboard"
+          title="Nhân sự"
           avatarUrl="https://i.pravatar.cc/150?img=1"
         />
       ),

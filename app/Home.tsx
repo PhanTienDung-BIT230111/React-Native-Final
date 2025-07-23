@@ -12,16 +12,16 @@ import { useNavigation } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { ActivityIndicator } from "react-native";
-import DashboardCard from "../components/DashboardCard";
-import ActionButton from "@/components/ActionButton";
-import HeaderWithAvatar from "../components/HeaderWithAvatar";
+import DashboardCard from "../components/HomeComponent/DashboardCard";
+import ActionButton from "@/components/HomeComponent/ActionButton";
+import HeaderWithAvatar from "../components/HomeComponent/HeaderWithAvatar";
 export default function DashboardScreen() {
   const [projectCount, setProjectCount] = useState(0);
   const [contractPending, setContractPending] = useState(0); // tạm mock
   const [employeeCount, setEmployeeCount] = useState(0); // tạm mock
   const [revenue, setRevenue] = useState("2.5B VND"); // tạm mock
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,6 +37,9 @@ export default function DashboardScreen() {
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, "projects"));
       setProjectCount(snapshot.size);
+      snapshot.forEach((doc) => {
+        console.log(doc.id, doc.data());
+      });
     };
 
     fetchData();
@@ -78,6 +81,7 @@ export default function DashboardScreen() {
           bgColor="#ccc"
         ></ActionButton>
       </View>
+      <Text style={styles.title}>Dự án gần đây</Text>
     </ScrollView>
   );
 }
