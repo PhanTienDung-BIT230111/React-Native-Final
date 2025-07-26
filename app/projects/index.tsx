@@ -1,22 +1,28 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { useLayoutEffect } from "react";
-import { useNavigation } from "expo-router";
-import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
-import ProjectOverview from "../../components/ProjectComponent/ProjectOverview";
-import { FontAwesome } from "@expo/vector-icons";
+import StatusFilter from "@/components/StatusFilter";
 import { db } from "@/firebase/config";
+import { FontAwesome } from "@expo/vector-icons";
+import { router, useNavigation } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
-import SearchBar from "../../components/SearchBar";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
 import ProjectCard from "../../components/ProjectComponent/ProjectCard";
-import StatusFilter from "@/components/ProjectComponent/StatusFilter";
+import ProjectOverview from "../../components/ProjectComponent/ProjectOverview";
+import SearchBar from "../../components/SearchBar";
+
+const statuses = [
+  "Tất cả",
+  "Đang thực hiện",
+  "Đã hoàn thành",
+  "Chờ xử lý",
+  "Tạm dừng",
+];
 enum ProjectStatus {
   pending = "Chờ xử lý",
   inProgress = "Đang thực hiện",
@@ -43,7 +49,7 @@ export default function projects() {
   const [searchProject, setSearchProject] = useState<string>("");
   // const [filter, setFilter] = useState(projects);
 
-  const filterData = projects.filter((item) => {
+  const filterProjectBySearch = projects.filter((item) => {
     return item.name.toLowerCase().includes(searchProject.toLowerCase());
   });
 
@@ -51,11 +57,34 @@ export default function projects() {
   const [selectedStatus, setSelectedStatus] = useState("Tất cả");
 
   // Lọc dữ liệu:
-  const filteredProjects = projects.filter((p) => {
+  const filteredProjectsByTag = projects.filter((p) => {
     if (selectedStatus === "Tất cả") return true;
     return p.status === selectedStatus;
   });
+  const filterData = searchProject
+    ? filterProjectBySearch
+    : filteredProjectsByTag;
 
+  // const addProject = async () => {
+  //   try {
+  //     const newProject = {
+  //       name: "Landing page sự kiện UTH 2025",
+  //       status: "Hoàn thành",
+  //       client: "Trường Đại học GTVT TP.HCM",
+  //       progress: "100",
+  //       createdAt: Timestamp.now(),
+  //       updatedAt: Timestamp.now(),
+  //       deadline: Timestamp.fromDate(new Date("2025-05-01")),
+  //       description: "Thiết kế giao diện landing page đẹp mắt",
+  //       members: ["em@example.com"],
+  //     };
+
+  //     await addDoc(collection(db, "projects"), newProject);
+  //     console.log("🟢 Thêm thành công!");
+  //   } catch (error) {
+  //     console.error("🔴 Lỗi khi thêm dự án:", error);
+  //   }
+  // };
   // const [filterProject, setFilterProject] = useState<Project[]>([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -77,70 +106,89 @@ export default function projects() {
           updateAt: data.updatedAt?.toDate(),
         };
       });
-
       setProjects(docs);
     };
-
     fetchData();
   }, []);
-
-  // log projects khi projects thay đổi
-  useEffect(() => {
-    console.log("Projects:", projects);
-  }, [projects]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (
         <HeaderWithAvatar
-          title="Dự án"
+          title="Dự án "
           avatarUrl="https://i.pravatar.cc/150?img=1"
         />
       ),
     });
   }, [navigation]);
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.cardContainer}>
-        <ProjectOverview
-          iconName="folder"
-          color="#000"
-          label="Tổng dự án"
-          total="20"
-          // sau lay du lieu tu firebase
-          bgColor="#fff"
+    <FlatList
+      style={styles.container}
+      data={filterData}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <ProjectCard
+          item={item}
+          onPress={() => {
+            router.push({
+              pathname: "/projects/[id]",
+              params: { id: item.id },
+            });
+            console.log("Project ID:", item.id);
+          }}
         />
-        <ProjectOverview
-          iconName="clock-o"
-          color="#000"
-          label="Đang thực hiện"
-          total="10"
-          bgColor="#fff"
-        />
-      </View>
-
-      <View style={styles.contentContainer}>
-        <TouchableOpacity style={styles.button}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            <FontAwesome name="plus" size={20} color="#fff" />
-            <Text style={styles.buttonText}>Tạo dự án mới</Text>
+      )}
+      ListEmptyComponent={
+        <Text style={{ padding: 20 }}>Không có dự án nào</Text>
+      }
+      ListHeaderComponent={
+        <>
+          <View style={styles.cardContainer}>
+            <ProjectOverview
+              iconName="folder"
+              color="#000"
+              label="Tổng dự án"
+              total={projectCount.toString()}
+              bgColor="#fff"
+            />
+            <ProjectOverview
+              iconName="clock-o"
+              color="#000"
+              label="Đang thực hiện"
+              total={projects
+                .filter((p) => p.status === ProjectStatus.inProgress)
+                .length.toString()}
+              bgColor="#fff"
+            />
           </View>
-        </TouchableOpacity>
-        {/* Search Bar */}
-        <SearchBar
-          placeholder="Tìm kiếm dự án"
-          searchProject={searchProject}
-          setSearchProject={setSearchProject}
-        />
 
-        <FlatList
-          data={filterData}
-          keyExtractor={(item) => item.id}
-          style={{}}
-          renderItem={({ item }) => <ProjectCard item={item} />}
-        />
-      </View>
-    </ScrollView>
+          <View style={styles.contentContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => router.push("/projects/new")}
+            >
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+              >
+                <FontAwesome name="plus" size={20} color="#fff" />
+                <Text style={styles.buttonText}>Tạo dự án mới</Text>
+              </View>
+            </TouchableOpacity>
+
+            <SearchBar
+              placeholder="Tìm kiếm dự án"
+              searchProject={searchProject}
+              setSearchProject={setSearchProject}
+            />
+            <StatusFilter
+              statuses={statuses}
+              selected={selectedStatus}
+              onSelect={setSelectedStatus}
+            />
+          </View>
+        </>
+      }
+    />
   );
 }
 const styles = StyleSheet.create({

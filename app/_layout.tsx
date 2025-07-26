@@ -1,5 +1,6 @@
-import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+
 export default function Layout() {
   return (
     <Tabs
@@ -26,15 +27,31 @@ export default function Layout() {
           headerShown: true,
         }}
       />
+
       <Tabs.Screen
-        name="projects/index"
+        name="projects"
         options={{
           title: "Dự án",
           tabBarIcon: ({ color }) => (
             <FontAwesome name="sitemap" size={20} color={color} />
           ),
+          headerShown: false, // Ẩn header cho tab này
         }}
       />
+
+      <Tabs.Screen
+        name="SeedEmployees"
+        options={{
+          title: "seed",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="sitemap" size={20} color={color} />
+          ),
+          headerShown: false, // Ẩn header cho tab này
+        }}
+      />
+
+      {/* KHÔNG thêm new hoặc [id] ở đây, vì sẽ bị hiện tab! */}
+
       <Tabs.Screen
         name="employees/index"
         options={{
@@ -44,6 +61,7 @@ export default function Layout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="contracts/index"
         options={{
@@ -53,6 +71,7 @@ export default function Layout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="report/index"
         options={{

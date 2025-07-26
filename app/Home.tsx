@@ -1,27 +1,19 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { useNavigation } from "expo-router";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { ActivityIndicator } from "react-native";
-import DashboardCard from "../components/HomeComponent/DashboardCard";
+import DashboardCard from "@/components/DashboardCard";
 import ActionButton from "@/components/HomeComponent/ActionButton";
-import HeaderWithAvatar from "../components/HomeComponent/HeaderWithAvatar";
+import HeaderWithAvatar from "@/components/HomeComponent/HeaderWithAvatar";
+import { db } from "@/firebase/config";
+import { useFocusEffect, useNavigation } from "expo-router";
+import { collection, getDocs } from "firebase/firestore";
+import { useCallback, useLayoutEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+
 export default function DashboardScreen() {
   const [projectCount, setProjectCount] = useState(0);
-  const [contractPending, setContractPending] = useState(0); // tạm mock
-  const [employeeCount, setEmployeeCount] = useState(0); // tạm mock
-  const [revenue, setRevenue] = useState("2.5B VND"); // tạm mock
+  const [contractPending, setContractPending] = useState(0); // mock
+  const [employeeCount, setEmployeeCount] = useState(0); // mock
+  const [revenue, setRevenue] = useState("2.5B VND"); // mock
 
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -33,17 +25,19 @@ export default function DashboardScreen() {
       ),
     });
   }, [navigation]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const snapshot = await getDocs(collection(db, "projects"));
-      setProjectCount(snapshot.size);
-      snapshot.forEach((doc) => {
-        console.log(doc.id, doc.data());
-      });
-    };
 
-    fetchData();
-  }, []);
+  const fetchDashboardData = async () => {
+    const snapshot = await getDocs(collection(db, "projects"));
+    setProjectCount(snapshot.size);
+    // có thể thêm các fetch khác như hợp đồng / nhân sự ở đây
+  };
+
+  // Tự load lại mỗi khi quay lại tab Home
+  useFocusEffect(
+    useCallback(() => {
+      fetchDashboardData();
+    }, [])
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -64,7 +58,7 @@ export default function DashboardScreen() {
         <DashboardCard label="Tổng doanh thu" value={revenue} />
       </View>
 
-      {/*Quick Action button  */}
+      {/* Thao tác nhanh */}
       <Text style={styles.title}>Thao tác nhanh</Text>
       <View style={styles.cardContainer}>
         <ActionButton
@@ -72,16 +66,17 @@ export default function DashboardScreen() {
           color="#fff"
           label="Tạo dự án mới"
           bgColor="#000"
-        ></ActionButton>
-
+        />
         <ActionButton
           iconName="clipboard"
           color="#000"
           label="Báo cáo tuần"
           bgColor="#ccc"
-        ></ActionButton>
+        />
       </View>
+
       <Text style={styles.title}>Dự án gần đây</Text>
+      {/* Có thể thêm FlatList dự án ở đây sau này */}
     </ScrollView>
   );
 }
@@ -101,15 +96,5 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 15,
     justifyContent: "space-between",
-  },
-  createPjBtn: {
-    color: "#fff",
-    backgroundColor: "#4CAF50",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "47%",
-    height: 80,
   },
 });

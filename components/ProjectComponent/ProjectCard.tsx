@@ -1,20 +1,31 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import { Project } from "@/app/projects";
+import { FontAwesome } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 type Props = {
   item: Project;
+  onPress?: () => void;
 };
 
-export default function ProjectCard({ item }: Props) {
+import { TouchableOpacity } from "react-native";
+
+export default function ProjectCard({ item, onPress }: Props) {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity onPress={onPress} style={styles.card} activeOpacity={0.8}>
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.client}>Khách hàng: {item.client}</Text>
+          <Text style={styles.name}>
+            {item.name.split(" ").slice(0, 4).join(" ") +
+              (item.name.split(" ").length > 4 ? "..." : "")}
+          </Text>
+          <Text style={styles.client}>
+            {item.client
+              ? item.client.split(" ").slice(0, 4).join(" ") +
+                (item.client.split(" ").length > 4 ? "..." : "")
+              : ""}
+          </Text>
         </View>
         <View style={styles.statusTag}>
           <Text style={styles.statusText}>{item.status}</Text>
@@ -52,10 +63,9 @@ export default function ProjectCard({ item }: Props) {
       </View>
       <Text style={styles.progressText}>{item.progress}%</Text>
 
-      {/* Avatars (mock) */}
-      {/* sau phải lấy từ db của employee ra  */}
+      {/* Avatars */}
       <View style={styles.avatars}>
-        <Image
+        {/* <Image
           source={{ uri: "https://i.pravatar.cc/100?img=1" }}
           style={styles.avatar}
         />
@@ -66,15 +76,16 @@ export default function ProjectCard({ item }: Props) {
         <Image
           source={{ uri: "https://i.pravatar.cc/100?img=3" }}
           style={styles.avatar}
-        />
+        /> */}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
+    margin: 20,
     padding: 16,
     borderRadius: 10,
     marginBottom: 15,

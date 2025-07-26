@@ -1,6 +1,5 @@
 import React from "react";
-import { View, TextInput, FlatList, StyleSheet, Text } from "react-native";
-import { useState } from "react";
+import { StyleSheet, TextInput, View } from "react-native";
 type Props = {
   placeholder?: string;
   searchProject: string;
@@ -23,12 +22,12 @@ const SearchBar = ({ placeholder, searchProject, setSearchProject }: Props) => {
 export default SearchBar;
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 10,
     flex: 1,
     backgroundColor: "#fff",
   },
   input: {
-    height: 80,
+    height: 50,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,

@@ -1,17 +1,24 @@
 // components/StatusFilter.tsx
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-
-const statuses = ["Tất cả", "Đang thực hiện", "Hoàn thành", "Tạm dừng"];
+import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type Props = {
+  statuses?: string[];
   selected: string;
   onSelect: (status: string) => void;
 };
 
-export default function StatusFilter({ selected, onSelect }: Props) {
+export default function StatusFilter({
+  statuses = [],
+  selected,
+  onSelect,
+}: Props) {
   return (
-    <View style={styles.container}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+    >
       {statuses.map((status) => (
         <TouchableOpacity
           key={status}
@@ -25,16 +32,17 @@ export default function StatusFilter({ selected, onSelect }: Props) {
           </Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 10,
     flexDirection: "row",
     gap: 10,
-    flexWrap: "wrap",
-    marginBottom: 10,
+    flexWrap: "nowrap",
+    paddingHorizontal: 2,
   },
   tag: {
     paddingVertical: 6,
