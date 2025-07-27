@@ -186,3 +186,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+{
+  /* <View style={styles.avatars}>
+  <Image
+    source={{ uri: "https://i.pravatar.cc/100?img=1" }}
+    style={styles.avatar}
+  />
+  <Image
+    source={{ uri: "https://i.pravatar.cc/100?img=2" }}
+    style={styles.avatar}
+  />
+  <Image
+    source={{ uri: "https://i.pravatar.cc/100?img=3" }}
+    style={styles.avatar}
+  />
+</View>; */
+}

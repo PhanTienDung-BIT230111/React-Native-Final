@@ -43,6 +43,8 @@ export type Project = {
 };
 export default function projects() {
   const navigation = useNavigation();
+
+  const [employees, setEmployees] = useState<any[]>([]);
   const [projectCount, setProjectCount] = useState(0);
   // search logic
   const [projects, setProjects] = useState<Project[]>([]);
@@ -107,7 +109,14 @@ export default function projects() {
         };
       });
       setProjects(docs);
+      const snapshotEmployee = await getDocs(collection(db, "employees"));
+      const docsEmployee = snapshotEmployee.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setEmployees(docsEmployee);
     };
+
     fetchData();
   }, []);
 

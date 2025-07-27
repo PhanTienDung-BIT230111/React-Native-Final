@@ -1,7 +1,9 @@
 import { Project } from "@/app/projects";
+import { db } from "@/firebase/config";
 import { FontAwesome } from "@expo/vector-icons";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 type Props = {
   item: Project;
@@ -11,6 +13,19 @@ type Props = {
 import { TouchableOpacity } from "react-native";
 
 export default function ProjectCard({ item, onPress }: Props) {
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const snapshot = await getDocs(collection(db, "employees"));
+      const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setEmployees(docs);
+    };
+    fetchEmployees();
+  });
+  const [employees, setEmployees] = useState<any[]>([]);
+  const getMembersInfo = (emails: string[]) => {
+    return employees.filter((emp) => emails.includes(emp.email));
+  };
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.card} activeOpacity={0.8}>
       {/* Header */}
@@ -65,18 +80,13 @@ export default function ProjectCard({ item, onPress }: Props) {
 
       {/* Avatars */}
       <View style={styles.avatars}>
-        {/* <Image
-          source={{ uri: "https://i.pravatar.cc/100?img=1" }}
-          style={styles.avatar}
-        />
-        <Image
-          source={{ uri: "https://i.pravatar.cc/100?img=2" }}
-          style={styles.avatar}
-        />
-        <Image
-          source={{ uri: "https://i.pravatar.cc/100?img=3" }}
-          style={styles.avatar}
-        /> */}
+        {getMembersInfo(item.members ?? []).map((member) => (
+          <Image
+            key={member.email}
+            source={{ uri: member.img }}
+            style={styles.avatar}
+          />
+        ))}
       </View>
     </TouchableOpacity>
   );

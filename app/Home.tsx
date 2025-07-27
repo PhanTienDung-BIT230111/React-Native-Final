@@ -1,12 +1,12 @@
 import DashboardCard from "@/components/DashboardCard";
 import ActionButton from "@/components/HomeComponent/ActionButton";
 import HeaderWithAvatar from "@/components/HomeComponent/HeaderWithAvatar";
-import { db } from "@/firebase/config";
-import { useFocusEffect, useNavigation } from "expo-router";
+import { auth, db } from "@/firebase/config";
+import { router, useFocusEffect, useNavigation } from "expo-router";
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-
 export default function DashboardScreen() {
   const [projectCount, setProjectCount] = useState(0);
   const [contractPending, setContractPending] = useState(0); // mock
@@ -14,7 +14,12 @@ export default function DashboardScreen() {
   const [revenue, setRevenue] = useState("2.5B VND"); // mock
 
   const navigation = useNavigation();
-
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) router.replace("/auth/login");
+    });
+    return unsubscribe;
+  }, []);
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (

@@ -39,7 +39,7 @@ export default function Layout() {
         }}
       />
 
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="SeedEmployees"
         options={{
           title: "seed",
@@ -48,12 +48,10 @@ export default function Layout() {
           ),
           headerShown: false, // Ẩn header cho tab này
         }}
-      />
-
-      {/* KHÔNG thêm new hoặc [id] ở đây, vì sẽ bị hiện tab! */}
+      /> */}
 
       <Tabs.Screen
-        name="employees/index"
+        name="employees"
         options={{
           title: "Nhân sự",
           tabBarIcon: ({ color }) => (
