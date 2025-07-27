@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
-import ProjectCard from "../../components/ProjectComponent/ProjectCard";
-import ProjectOverview from "../../components/ProjectComponent/ProjectOverview";
-import SearchBar from "../../components/SearchBar";
+import HeaderWithAvatar from "../../../components/HomeComponent/HeaderWithAvatar";
+import ProjectCard from "../../../components/ProjectComponent/ProjectCard";
+import ProjectOverview from "../../../components/ProjectComponent/ProjectOverview";
+import SearchBar from "../../../components/SearchBar";
 
 const statuses = [
   "Tất cả",

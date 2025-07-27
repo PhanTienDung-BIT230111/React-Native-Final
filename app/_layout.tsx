@@ -1,84 +1,16 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
+import { Stack, useRouter } from "expo-router";
+import { useEffect } from "react";
 
-export default function Layout() {
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "#000",
-        tabBarInactiveTintColor: "#6b7280",
-        tabBarStyle: {
-          backgroundColor: "#fff",
-          paddingTop: 5,
-          height: 60,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="Home"
-        options={{
-          title: "Trang chủ",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="home" size={20} color={color} />
-          ),
-          headerShown: true,
-        }}
-      />
+export default function RootLayout() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
-      <Tabs.Screen
-        name="projects"
-        options={{
-          title: "Dự án",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="sitemap" size={20} color={color} />
-          ),
-          headerShown: false, // Ẩn header cho tab này
-        }}
-      />
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/auth/login");
+    }
+  }, [user, loading]);
 
-      {/* <Tabs.Screen
-        name="SeedEmployees"
-        options={{
-          title: "seed",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="sitemap" size={20} color={color} />
-          ),
-          headerShown: false, // Ẩn header cho tab này
-        }}
-      /> */}
-
-      <Tabs.Screen
-        name="employees"
-        options={{
-          title: "Nhân sự",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="users" size={20} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="contracts/index"
-        options={{
-          title: "Hợp đồng",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="file-text" size={20} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="report/index"
-        options={{
-          title: "Báo cáo",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="bar-chart" size={20} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+  return <Stack />;
 }

@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
+import HeaderWithAvatar from "../../../components/HomeComponent/HeaderWithAvatar";
 
 export default function NewProjectScreen() {
   const [name, setName] = useState("");
