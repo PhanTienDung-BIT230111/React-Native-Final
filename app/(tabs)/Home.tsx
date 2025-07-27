@@ -20,6 +20,8 @@ export default function DashboardScreen() {
     });
     return unsubscribe;
   }, []);
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (
@@ -32,10 +34,18 @@ export default function DashboardScreen() {
   }, [navigation]);
 
   const fetchDashboardData = async () => {
-    const snapshot = await getDocs(collection(db, "projects"));
-    setProjectCount(snapshot.size);
+    const snapshotProject = await getDocs(collection(db, "projects"));
+    setProjectCount(snapshotProject.size);
+
+    // const snapshotContract = await getDocs(collection(db, "contracts"));
+    // setContractPending(snapshotContract.size);
+
+    const snapshotEmployee = await getDocs(collection(db, "employees"));
+    setEmployeeCount(snapshotEmployee.size);
+
     // có thể thêm các fetch khác như hợp đồng / nhân sự ở đây
   };
+  
 
   // Tự load lại mỗi khi quay lại tab Home
   useFocusEffect(

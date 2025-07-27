@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import {
   Alert,
   Image,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import Modal from "react-native-modal";
 
 type Props = {
   title: string;
@@ -57,30 +57,40 @@ const HeaderWithAvatar = ({ title, avatarUrl }: Props) => {
 
       {/* Menu Modal */}
       <Modal
-        isVisible={isModalVisible}
-        onBackdropPress={toggleModal}
-        backdropOpacity={0.3}
-        style={{ justifyContent: "flex-end", margin: 0 }}
+        visible={isModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={toggleModal}
       >
-        <View style={styles.modal}>
-          <Text style={styles.menuTitle}>👤 Tài khoản</Text>
+        <TouchableOpacity 
+          style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)' }} 
+          activeOpacity={1} 
+          onPress={toggleModal}
+        >
+          <View style={{ flex: 1, justifyContent: "flex-end" }}>
+            <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+              <View style={styles.modal}>
+                <Text style={styles.menuTitle}>👤 Tài khoản</Text>
 
-          <Pressable
-            style={styles.menuItem}
-            onPress={() => {
-              toggleModal();
-              router.push("/Home"); // hoặc chuyển sang trang cá nhân
-            }}
-          >
-            <Text style={styles.menuText}>Thông tin cá nhân</Text>
-          </Pressable>
+                <Pressable
+                  style={styles.menuItem}
+                  onPress={() => {
+                    toggleModal();
+                    router.push("/(tabs)/Home"); // hoặc chuyển sang trang cá nhân
+                  }}
+                >
+                  <Text style={styles.menuText}>Thông tin cá nhân</Text>
+                </Pressable>
 
-          <Pressable style={styles.menuItem} onPress={handleLogout}>
-            <Text style={[styles.menuText, { color: "#dc2626" }]}>
-              Đăng xuất
-            </Text>
-          </Pressable>
-        </View>
+                <Pressable style={styles.menuItem} onPress={handleLogout}>
+                  <Text style={[styles.menuText, { color: "#dc2626" }]}>
+                    Đăng xuất
+                  </Text>
+                </Pressable>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
       </Modal>
     </>
   );

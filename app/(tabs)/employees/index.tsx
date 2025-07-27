@@ -6,7 +6,7 @@ import { db } from "@/firebase/config";
 import { FontAwesome } from "@expo/vector-icons";
 import { router, useNavigation } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -25,7 +25,7 @@ export default function EmployeeScreen() {
   const [search, setSearch] = useState("");
   const navigation = useNavigation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (
         <HeaderWithAvatar
@@ -35,7 +35,6 @@ export default function EmployeeScreen() {
       ),
     });
   }, [navigation]);
-
   useEffect(() => {
     // seedProjects(); // seed projects data if needed
     const fetchEmployees = async () => {
@@ -64,11 +63,14 @@ export default function EmployeeScreen() {
       ListEmptyComponent={<Text style={{ padding: 20 }}>Không có nhân sự</Text>}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <View style={styles.card}>
+        <TouchableOpacity 
+          style={styles.card}
+          onPress={() => router.push(`/(tabs)/employees/${item.id}`)}
+        >
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <Image
               source={{ uri: `${item.img}` }}
-              style={{ width: 30, height: 30, borderRadius: 15 }}
+              style={{ width: 50, height: 50, borderRadius: 30 }}
             />
             <View>
               <Text style={styles.name}>{item.name}</Text>
@@ -77,20 +79,20 @@ export default function EmployeeScreen() {
             </View>
           </View>
           <Text style={styles.statusTag}>{item.status || "Hoạt động"}</Text>
-        </View>
+        </TouchableOpacity>
       )}
       ListHeaderComponent={
         <>
           <View style={styles.contentContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => router.push("/projects/new")}
+              onPress={() => router.push("/(tabs)/employees/new")}
             >
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
               >
                 <FontAwesome name="plus" size={20} color="#fff" />
-                <Text style={styles.buttonText}>Tạo dự án mới</Text>
+                <Text style={styles.buttonText}>Thêm nhân sự</Text>
               </View>
             </TouchableOpacity>
             <SearchBar

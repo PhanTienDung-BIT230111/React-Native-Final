@@ -3,12 +3,12 @@ import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import {
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 export default function LoginScreen() {
@@ -20,7 +20,7 @@ export default function LoginScreen() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("🟢 Đăng nhập thành công");
-      router.replace("/Home"); // hoặc tới dashboard
+      router.replace("/(tabs)/Home"); // hoặc tới dashboard
     } catch (error: any) {
       console.log("🔴 Lỗi đăng nhập:", error.message);
       Alert.alert("Lỗi", error.message);

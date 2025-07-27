@@ -5,7 +5,7 @@ export default function EmployeeLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false, // hoặc true nếu muốn header mặc định
+        headerShown: true, // hoặc true nếu muốn header mặc định
       }}
     />
   );

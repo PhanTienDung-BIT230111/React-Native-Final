@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
-import { useLayoutEffect } from "react";
 import { useNavigation } from "expo-router";
-import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
+import React, { useLayoutEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import HeaderWithAvatar from "../../../components/HomeComponent/HeaderWithAvatar";
 
 export default function contracts() {
   const navigation = useNavigation();

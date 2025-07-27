@@ -1,20 +1,20 @@
 import StatusFilter from "@/components/StatusFilter";
 import { db } from "@/firebase/config";
 import { FontAwesome } from "@expo/vector-icons";
-import { router, useNavigation } from "expo-router";
+import { router, useFocusEffect, useNavigation } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import HeaderWithAvatar from "../../components/HomeComponent/HeaderWithAvatar";
-import ProjectCard from "../../components/ProjectComponent/ProjectCard";
-import ProjectOverview from "../../components/ProjectComponent/ProjectOverview";
-import SearchBar from "../../components/SearchBar";
+import HeaderWithAvatar from "../../../components/HomeComponent/HeaderWithAvatar";
+import ProjectCard from "../../../components/ProjectComponent/ProjectCard";
+import ProjectOverview from "../../../components/ProjectComponent/ProjectOverview";
+import SearchBar from "../../../components/SearchBar";
 
 const statuses = [
   "Tất cả",
@@ -67,58 +67,44 @@ export default function projects() {
     ? filterProjectBySearch
     : filteredProjectsByTag;
 
-  // const addProject = async () => {
-  //   try {
-  //     const newProject = {
-  //       name: "Landing page sự kiện UTH 2025",
-  //       status: "Hoàn thành",
-  //       client: "Trường Đại học GTVT TP.HCM",
-  //       progress: "100",
-  //       createdAt: Timestamp.now(),
-  //       updatedAt: Timestamp.now(),
-  //       deadline: Timestamp.fromDate(new Date("2025-05-01")),
-  //       description: "Thiết kế giao diện landing page đẹp mắt",
-  //       members: ["em@example.com"],
-  //     };
+  const fetchData = async () => {
+    const snapshot = await getDocs(collection(db, "projects"));
+    setProjectCount(snapshot.size);
 
-  //     await addDoc(collection(db, "projects"), newProject);
-  //     console.log("🟢 Thêm thành công!");
-  //   } catch (error) {
-  //     console.error("🔴 Lỗi khi thêm dự án:", error);
-  //   }
-  // };
-  // const [filterProject, setFilterProject] = useState<Project[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const snapshot = await getDocs(collection(db, "projects"));
-      setProjectCount(snapshot.size);
-
-      const docs: Project[] = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          name: data.name,
-          status: data.status,
-          progress: data.progress,
-          deadline: data.deadline?.toDate(),
-          client: data.client,
-          description: data.description,
-          members: data.members || [],
-          createAt: data.createdAt?.toDate(),
-          updateAt: data.updatedAt?.toDate(),
-        };
-      });
-      setProjects(docs);
-      const snapshotEmployee = await getDocs(collection(db, "employees"));
-      const docsEmployee = snapshotEmployee.docs.map((doc) => ({
+    const docs: Project[] = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
         id: doc.id,
-        ...doc.data(),
-      }));
-      setEmployees(docsEmployee);
-    };
+        name: data.name,
+        status: data.status,
+        progress: data.progress,
+        deadline: data.deadline?.toDate(),
+        client: data.client,
+        description: data.description,
+        members: data.members || [],
+        createAt: data.createdAt?.toDate(),
+        updateAt: data.updatedAt?.toDate(),
+      };
+    });
+    setProjects(docs);
+    const snapshotEmployee = await getDocs(collection(db, "employees"));
+    const docsEmployee = snapshotEmployee.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setEmployees(docsEmployee);
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
+
+  // Refresh data when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
