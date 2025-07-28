@@ -5,11 +5,11 @@ import { router, useFocusEffect, useNavigation } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import HeaderWithAvatar from "../../../components/HomeComponent/HeaderWithAvatar";
 import ProjectCard from "../../../components/ProjectComponent/ProjectCard";

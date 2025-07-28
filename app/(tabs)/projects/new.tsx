@@ -6,15 +6,15 @@ import { router, useFocusEffect, useNavigation } from "expo-router";
 import { addDoc, collection, getDocs, query, Timestamp, where } from "firebase/firestore";
 import React, { useLayoutEffect, useState } from "react";
 import {
-    Alert,
-    Image,
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Alert,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
 import HeaderWithAvatar from "../../../components/HomeComponent/HeaderWithAvatar";
 
@@ -160,7 +160,7 @@ export default function NewProjectScreen() {
     navigation.setOptions({
       header: () => (
         <HeaderWithAvatar
-          title="Chi tiết dự án"
+          title="Tạo dự án mới"
           avatarUrl="https://i.pravatar.cc/150?img=1"
         />
       ),
