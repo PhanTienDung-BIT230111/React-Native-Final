@@ -19,19 +19,34 @@ export default function StatusFilter({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.container}
     >
-      {statuses.map((status) => (
-        <TouchableOpacity
-          key={status}
-          style={[styles.tag, selected === status && styles.activeTag]}
-          onPress={() => onSelect(status)}
-        >
-          <Text
-            style={[styles.tagText, selected === status && styles.activeText]}
+      {statuses.map((status) => {
+        const isSelected = selected === status;
+        
+        return (
+          <TouchableOpacity
+            key={status}
+            style={[
+              styles.tag,
+              { 
+                backgroundColor: isSelected ? "#111827" : "#f1f1f1",
+              }
+            ]}
+            onPress={() => onSelect(status)}
           >
-            {status}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            <Text
+              style={[
+                styles.tagText,
+                { 
+                  color: isSelected ? "#fff" : "#374151",
+                  fontWeight: isSelected ? "bold" : "500"
+                }
+              ]}
+            >
+              {status}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </ScrollView>
   );
 }
@@ -45,20 +60,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   tag: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: "#f1f1f1",
-  },
-  activeTag: {
-    backgroundColor: "#111827",
+    minWidth: 80,
+    alignItems: "center",
   },
   tagText: {
-    color: "#374151",
     fontSize: 14,
-  },
-  activeText: {
-    color: "#fff",
-    fontWeight: "bold",
   },
 });

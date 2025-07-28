@@ -51,12 +51,13 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="contracts/index"
+        name="contracts"
         options={{
           title: "Hợp đồng",
           tabBarIcon: ({ color }) => (
             <FontAwesome name="file-text" size={20} color={color} />
           ),
+          headerShown: false,
         }}
       />
 
