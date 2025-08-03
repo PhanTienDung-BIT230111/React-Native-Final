@@ -67,7 +67,6 @@ export default function DashboardScreen() {
   );
 
   const calculateRevenue = () => {
-    // Mock calculation based on contract count
     return `${(contractCount * 500).toLocaleString()} VND`;
   };
 

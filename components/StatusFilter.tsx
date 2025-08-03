@@ -23,17 +23,17 @@ export default function StatusFilter({
         const isSelected = selected === status;
         
         return (
-          <TouchableOpacity
-            key={status}
+        <TouchableOpacity
+          key={status}
             style={[
               styles.tag,
               { 
                 backgroundColor: isSelected ? "#111827" : "#f1f1f1",
               }
             ]}
-            onPress={() => onSelect(status)}
-          >
-            <Text
+          onPress={() => onSelect(status)}
+        >
+          <Text
               style={[
                 styles.tagText,
                 { 
@@ -41,10 +41,10 @@ export default function StatusFilter({
                   fontWeight: isSelected ? "bold" : "500"
                 }
               ]}
-            >
-              {status}
-            </Text>
-          </TouchableOpacity>
+          >
+            {status}
+          </Text>
+        </TouchableOpacity>
         );
       })}
     </ScrollView>

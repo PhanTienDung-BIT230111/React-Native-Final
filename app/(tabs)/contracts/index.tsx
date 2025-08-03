@@ -339,7 +339,7 @@ export default function ContractsScreen() {
               selected={selectedStatus}
               onSelect={setSelectedStatus}
             />
-          </View>
+    </View>
         </>
       }
     />

@@ -66,21 +66,21 @@ export default function ProjectDetail() {
       console.error("Lỗi khi lấy thông tin thành viên:", error);
     }
   };
-  const deleteAllProjects = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "projects"));
+  // const deleteAllProjects = async () => {
+  //   try {
+  //     const querySnapshot = await getDocs(collection(db, "projects"));
 
-      const deletePromises = querySnapshot.docs.map((document) =>
-        deleteDoc(doc(db, "projects", document.id))
-      );
+  //     const deletePromises = querySnapshot.docs.map((document) =>
+  //       deleteDoc(doc(db, "projects", document.id))
+  //     );
 
-      await Promise.all(deletePromises);
+  //     await Promise.all(deletePromises);
 
-      console.log("🗑️ Đã xóa tất cả dự án thành công.");
-    } catch (error) {
-      console.error("❌ Lỗi khi xóa tất cả projects:", error);
-    }
-  };
+  //     console.log("🗑️ Đã xóa tất cả dự án thành công.");
+  //   } catch (error) {
+  //     console.error("❌ Lỗi khi xóa tất cả projects:", error);
+  //   }
+  // };
   const handleDelete = async () => {
     Alert.alert("Xác nhận xoá", "Bạn có chắc muốn xoá dự án này?", [
       { text: "Huỷ" },

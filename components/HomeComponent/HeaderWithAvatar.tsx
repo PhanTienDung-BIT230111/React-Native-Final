@@ -30,7 +30,6 @@ const HeaderWithAvatar = ({ title, avatarUrl }: Props) => {
         text: "Đăng xuất",
         style: "destructive",
         onPress: () => {
-          // TODO: gọi signOut nếu dùng Firebase Auth
           router.replace("/auth/login");
         },
       },
@@ -76,7 +75,7 @@ const HeaderWithAvatar = ({ title, avatarUrl }: Props) => {
                   style={styles.menuItem}
                   onPress={() => {
                     toggleModal();
-                    router.push("/(tabs)/Home"); // hoặc chuyển sang trang cá nhân
+                    router.push("/(tabs)/Home"); 
                   }}
                 >
                   <Text style={styles.menuText}>Thông tin cá nhân</Text>
